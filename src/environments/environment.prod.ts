@@ -1,3 +1,6 @@
 export const environment = {
-  production: true
+  production: true,
+
+  apiRequest: "http://www.omdbapi.com/?apikey=c7e569ea&",
+  posterApiRequest: "http://img.omdbapi.com/?apikey=c7e569ea&"
 };

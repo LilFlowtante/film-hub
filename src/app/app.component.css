@@ -1,0 +1,94 @@
+.navbar {
+    background-color: black;
+}
+.favoris {
+    color: white;
+}
+.search-form {
+    background-color: #5F6A6A;
+    padding: 5px;
+    border-radius: 5px;
+    height: 60px;
+}
+::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: white !important;
+}
+::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: white !important;
+} 
+
+::ng-deep.mat-form-field-ripple {
+   /*change color of underline when focused*/
+   background-color: white !important;;
+}
+.mat-raised-button.mat-orange {
+    background-color: #F39C12 !important;
+    color: white;
+ }
+.title {
+    text-align: center;
+    color: white;
+}
+.container {
+    position: relative;
+    width: 50%;
+}
+.image {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
+.example-card {
+    background-color: #5F6A6A;
+}
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+.container:hover .image {
+    opacity: 0.3;
+}
+.container:hover .middle {
+    opacity: 1;
+}
+.text {
+    background-color: #F39C12;
+    color: white;
+    font-size: 16px;
+    padding: 16px 32px;
+}
+a {
+    text-decoration: none;
+    color: white;
+}
+.fav-movie {
+    text-decoration: none;
+    color: black;
+}
+.movie-detail {
+    margin: 0px auto;
+    max-width: 400px;
+    background-color: white;
+}
+.movie-detail-image {
+  background-image: var(--urlImg);
+  background-size: cover;
+}
+.logo {
+    width: 100px;
+    height: 50px;
+}
+.content {
+    background-color: #5F6A6A;
+}

@@ -1,0 +1,9 @@
+.movie-detail {
+    margin: 0px auto;
+    max-width: 400px;
+    background-color: white;
+}
+.movie-detail-image {
+  background-image: var(--urlImg);
+  background-size: cover;
+}

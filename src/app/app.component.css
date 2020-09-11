@@ -1,14 +1,15 @@
 .navbar {
     background-color: black;
+    height: 60px;
 }
 .favoris {
     color: white;
 }
-.search-form {
-    background-color: #5F6A6A;
-    padding: 5px;
-    border-radius: 5px;
-    height: 60px;
+::ng-deep .mat-form-field-label {
+    color: white !important;
+}
+input {
+    color: white !important;
 }
 ::ng-deep .mat-focused .mat-form-field-label {
     /*change color of label*/
@@ -27,9 +28,34 @@
     background-color: #F39C12 !important;
     color: white;
  }
+ .main-container {
+     margin-left: 10px;
+     margin-right: 10px;
+ }
 .title {
     text-align: center;
     color: white;
+}
+.movie {
+    margin-bottom: 10px;
+}
+.movie-card {
+    border: 0px;
+    border-radius: 0px;
+    height: 600px;
+}
+.movie-card:hover .image {
+    opacity: 0.3;
+}
+.movie-card:hover .middle {
+    opacity: 1;
+}
+.movie-card-body {
+    padding: 0px;
+    background-color: #5F6A6A;
+}
+.movie-card-body img {
+    height: 100%;
 }
 .container {
     position: relative;
@@ -76,19 +102,20 @@ a {
     text-decoration: none;
     color: black;
 }
-.movie-detail {
-    margin: 0px auto;
-    max-width: 400px;
-    background-color: white;
-}
-.movie-detail-image {
-  background-image: var(--urlImg);
-  background-size: cover;
-}
 .logo {
     width: 100px;
     height: 50px;
 }
 .content {
     background-color: #5F6A6A;
+}   
+::ng-deep .mat-simple-snackbar-action {
+    color: #F39C12;
 }
+::ng-deep .mat-paginator {
+    background-color: #5F6A6A;
+    color: white;
+}
+::ng-deep .mat-select-value {
+    color: white !important;
+  }

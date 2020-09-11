@@ -3,7 +3,9 @@ import { MovieService } from './services/movie.service';
 import { Movie } from './models/movie';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { PageEvent } from '@angular/material/paginator';
+import { MovieComponent } from './components/movie/movie.component';
 
 @Component({
   selector: 'app-root',
@@ -23,8 +25,10 @@ export class AppComponent implements OnInit, OnDestroy {
   movieIsFavorite: boolean = false;
 
   showSearchMovies: boolean = true;
-  showMovieDetails: boolean = false;
   showFavoriteMovies: boolean = false;
+
+  totalMovieSearchResult: number = 0;
+  pageSize: number = 10;
 
   findMovieForm = new FormGroup({
     key: new FormControl('')
@@ -39,7 +43,7 @@ export class AppComponent implements OnInit, OnDestroy {
   findMovies() {
     this.searchMoviesSubscription = this.movieService.searchMovies(this.findMovieForm.controls['key'].value)
     .subscribe((movies: any) => {
-      this.showMovieDetails = false;
+      this.totalMovieSearchResult = movies.totalResults;
       this.showFavoriteMovies = false;
       this.showSearchMovies = true;
       // Cutsom user message
@@ -50,9 +54,21 @@ export class AppComponent implements OnInit, OnDestroy {
         this.moviesMessage = "Pas de résultats"
         this.movies = [];
       } else {
-        this.moviesMessage = movies.Search.length + " film(s)";
+        this.moviesMessage = movies.totalResults + " film(s) trouvés pour " + '"' + this.findMovieForm.controls['key'].value + '"';
         this.movies = movies.Search;
+        // Order by year of release
+        this.movies.sort((a: Movie, b: Movie) => { return this.compare(a.Year.toString(), b.Year.toString(), true)});
       }
+    })
+  }
+
+  pageEvent(page: PageEvent) {
+    const index: number = page.pageIndex + 1;
+    this.movieService.searchMoviesPages(this.findMovieForm.controls['key'].value, index)
+    .subscribe((movies: any) => {
+      this.movies = movies.Search;
+      // Order by year of release
+      this.movies.sort((a: Movie, b: Movie) => { return this.compare(a.Year.toString(), b.Year.toString(), true)});
     })
   }
 
@@ -62,6 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.movieIsFavorite = true;
     this._snackBar.open(movie.Title + " ajouté aux favoris", "OK", {
       duration: 3000,
+      panelClass: ['snackbar-action']
     });
   }
 
@@ -72,35 +89,27 @@ export class AppComponent implements OnInit, OnDestroy {
         this.favoris.splice(index, 1);
       }
     })
-    // Display add movie to favoris ico
+    this.moviesMessage = this.favoris.length + " favoris";
     this.movieIsFavorite = false;
     this._snackBar.open(movie.Title + " supprimé des favoris", "OK", {
       duration: 3000,
+      panelClass: ['snackbar-action']
     });
   }
 
-  showMovie(title: string) {
-    this.movieIsFavorite = false; 
-    this.getByTitleSubscription = this.movieService.getByTitle(title)
-    .subscribe((movie: Movie) => {
-      this.movie = movie;
-      this.showSearchMovies = false;
-      this.showFavoriteMovies = false;
-      this.showMovieDetails = true;
-      // Check if movie is favoris and display add/ or delete from favoris ico
-      this.favoris.forEach((movie: Movie) => {
-        if(movie.Title == title) {
-          this.movieIsFavorite = true;
-        }
-      })
-    })
+  showMovie() {
+    this.showSearchMovies = false;
+    this.showFavoriteMovies = false;
   }
 
-  showFavoris() {
+  showFavoris() { 
     this.moviesMessage = this.favoris.length + " favoris";
     this.showSearchMovies = false;
-    this.showMovieDetails = false;
     this.showFavoriteMovies = true;
+  }
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a > b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
   ngOnDestroy() {

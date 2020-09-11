@@ -1,6 +1,5 @@
 <!-- HEADER -->
-<nav class="navbar navbar-expand-lg">
-    <!--<a class="navbar-brand" href="javascript:void(0)"><strong>FindYourMovie</strong></a>-->
+<nav class="navbar navbar-expand-lg"> 
     <a class="navbar-brand" href="javascript:void(0)">
       <img src="assets/favicon.jpg" alt="logo" class="logo">
     </a>
@@ -13,6 +12,8 @@
         <li class="nav-item">
           <button class="favoris" [disabled]="favoris.length == 0" mat-button (click)="showFavoris()">
             Favoris
+            &nbsp;
+            <i class="fas fa-heart"></i>
           </button>
         </li>
       </ul>
@@ -37,62 +38,63 @@
   
 <br/>
 
-<!-- MOVIES -->
-<div *ngIf="showSearchMovies" class="content">
-  <h1 class="title">{{moviesMessage}}</h1>
-  <mat-card class="example-card" *ngFor="let movie of movies">
-    <div class="container">
-      <img [src]="movie.Poster" alt="movie-poster" class="image" style="width:100%">
-      <div class="middle">
-        <div class="text">
-          <a href="javascript:void()" (click)="showMovie(movie.Title)">{{movie.Title}}</a>
-          &nbsp;
-          <a href="javascript:void()" (click)="addToFavoris(movie)">
-            <i class="far fa-heart" matTooltip="Ajouter aux favoris"></i>
-          </a>
+<div class="main-container">
+
+  <h1 class="title">{{moviesMessage}}&nbsp;<i class="fas fa-film"></i></h1>
+
+  <br/>
+
+  <!-- SEARCH MOVIES -->
+  <div *ngIf="showSearchMovies" class="row content">
+    <div class="col-md-4 movie" *ngFor="let movie of movies">
+      <div class="card movie-card">
+        <div class="card-body align-items-center d-flex justify-content-center movie-card-body">
+          <img [src]="movie.Poster" alt="movie-poster" class="image" style="width:100%">
+          <div class="middle">
+            <div class="text">
+              <a href="javascript:void()" (click)="showMovie()"
+                 [routerLink]="['/movie']"
+                 [queryParams]="{ title: movie.Title }">{{movie.Title}} {{movie.Year}}</a>
+              &nbsp;
+              <a href="javascript:void()" (click)="addToFavoris(movie)">
+                <i class="far fa-heart" matTooltip="Ajouter aux favoris"></i>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </mat-card>
-</div>
+  </div>
+  <mat-paginator *ngIf="showSearchMovies && movies.length > 0" [length]="totalMovieSearchResult"
+                 [pageSize]="pageSize"
+                 (page)="pageEvent($event)"></mat-paginator>
 
-<!-- MOVIE DETAILS -->
-<mat-card class="movie-detail" *ngIf="showMovieDetails">
-  <mat-card-header>
-    <mat-card-title>{{movie.Title}}</mat-card-title>
-    <mat-card-subtitle>Année: {{movie.Year}}</mat-card-subtitle>
-    <mat-card-subtitle>Directeur: {{movie.Director}}</mat-card-subtitle>
-    <mat-card-subtitle>Acteurs: {{movie.Actors}}</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image [src]="movie.Poster" alt="Photo of a Shiba Inu">
-  <mat-card-content>
-    <p>
-      {{movie.Plot}}
-    </p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button *ngIf="movieIsFavorite" (click)="deleteFromFavoris(movie)">
-      <i class="fas fa-heart" matTooltip="Enlever des favoris"></i>
-    </button>
-    <button mat-button *ngIf="!movieIsFavorite" (click)="addToFavoris(movie)">
-      <i class="far fa-heart" matTooltip="Ajouter aux favoris"></i>
-    </button>
-  </mat-card-actions>
-</mat-card>
-
-<!-- FAVORIS -->
-<div *ngIf="showFavoriteMovies" class="content">
-  <h1 class="title">{{moviesMessage}}</h1>
-  <mat-card class="example-card" *ngFor="let favori of favoris">
-    <div class="container">
-      <img [src]="favori.Poster" alt="movie-poster" class="image" style="width:100%">
-      <div class="middle">
-        <div class="text">
-          <a href="javascript:void()" (click)="showMovie(favori.Title)">{{favori.Title}}</a>
+  <!-- FAVORIS -->
+  <div *ngIf="showFavoriteMovies" class="row content">
+    <div class="col-md-4 movie" *ngFor="let favori of favoris">
+      <div class="card movie-card">
+        <div class="card-body align-items-center d-flex justify-content-center movie-card-body">
+          <img [src]="favori.Poster" alt="movie-poster" class="image" style="width:100%">
+          <div class="middle">
+            <div class="text">
+              <a href="javascript:void()" (click)="showMovie()"
+                 [routerLink]="['/movie']"
+                 [queryParams]="{ title: favori.Title }">{{favori.Title}} {{favori.Year}}</a>
+              &nbsp;
+              <a href="javascript:void()" (click)="deleteFromFavoris(favori)">
+                <i class="fas fa-heart" matTooltip="Enlever des favoris"></i>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </mat-card>
+  </div>
+
+  <br/>
+
+  <h1 class="title" *ngIf="showSearchMovies || showFavoriteMovies">Dernier film consulté&nbsp;<i class="fas fa-film"></i></h1>
+
 </div>
 
 <!-- LOADER -->

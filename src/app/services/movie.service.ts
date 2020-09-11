@@ -20,4 +20,8 @@ export class MovieService {
   searchMovies(key: string): Observable<Movie[]> {
     return this.http.get<Movie[]>(`${this.urlAPI}s=${key}`);
   }
+
+  searchMoviesPages(key: string, pageNumber: number): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${this.urlAPI}s=${key}&page=${pageNumber}`);
+  }
 }
